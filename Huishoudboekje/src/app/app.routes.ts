@@ -6,4 +6,5 @@ export const routes: Routes = [
     { path: '', redirectTo: 'overview', pathMatch: 'full' },
     { path: 'overview', component: HuishoudboekjeOverviewPageComponent },
     { path: 'huishoudboekje/:id', component: DetailHuishoudboekjeComponent }
+    { path: 'auth', component: AuthenticationPageComponent}
 ];

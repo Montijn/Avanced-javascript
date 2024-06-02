@@ -2,34 +2,51 @@ import { Injectable } from '@angular/core';
 import { FirebaseService } from '../firebase/firebase.service';
 import { CollectionReference, collection, setDoc, doc, onSnapshot } from 'firebase/firestore';
 import { User } from '../../models/user.model';
-import { User as FirebaseUser } from 'firebase/auth';
-import { Observable } from 'rxjs';
+import { Auth, User as FirebaseUser } from 'firebase/auth';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private readonly collection: CollectionReference<User>
+  public $users: Observable<any> = of([]);
+  public auth: Auth;
+  private usersRef: CollectionReference<any>;
+
+
   constructor(private firebaseService: FirebaseService) { 
-    this.collection = collection(this.firebaseService.firestore, 'users') as CollectionReference<User>;
-  }
-
-  async updateUser(user: FirebaseUser | null) {
-    if (user == null) return;
-    const userModel = {
-      email: user.email,
-      name: user.displayName,
-    }
-    console.log(userModel);
-    // await setDoc(doc(this.collection, user.uid), userModel as User);
-  }
-
-  async getUser(userId: any) {
-    let docRef = doc(this.collection, userId);
-    return new Observable((subscriber) => {
-      const eventsSnapshot = onSnapshot(docRef, (snapshot) => {
-        subscriber.next({...snapshot.data(), id: snapshot.id});
+    this.usersRef = collection(this.firebaseService.firestore, 'users');
+    this.auth = this.firebaseService.auth
+    this.$users = new Observable((subscriber) => {
+      const usersSnapshot = onSnapshot(this.usersRef, (snapshot) => {
+        const users = snapshot.docs.map(doc=> {
+          const data = doc.data();
+          return { ...data, id: doc.id}
+        })
+        subscriber.next(users);
       });
     });
   }
+
+  addUser(user: any) {
+    const usersCol = collection(this.firebaseService.firestore, 'users');
+    setDoc(doc(usersCol, user.email), user)
+      .then(() => {
+        console.log('User added successfully');
+      })
+      .catch((error) => {
+        console.error('Error adding User: ', error);
+      })
+  }
+
+  getUser(id: any) {
+    let docRef = doc(this.firebaseService.firestore, 'users', id);
+    return new Observable((subscriber) => {
+      let unsubscribe = onSnapshot(docRef, (snapshot) => {
+        subscriber.next({...snapshot.data(), id: snapshot.id});
+      })
+      return unsubscribe;
+    })
+  }
+
 }

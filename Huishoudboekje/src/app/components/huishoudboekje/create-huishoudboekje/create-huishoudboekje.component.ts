@@ -14,7 +14,14 @@ import { AuthService } from '../../../services/auth/auth.service';
   styleUrl: './create-huishoudboekje.component.scss'
 })
 export class CreateHuishoudboekjeComponent {
+
+  currentUserId: string
   constructor(private huishoudboekjeService: HuishoudboekjeService, private authService: AuthService){
+    this.authService.$currentUser.subscribe(user => {
+      if (user) {
+        this.currentUserId = user.uid;
+      }
+    });
   }
   huishoudboekje: Huishoudboekje ={
     name: '',
@@ -25,8 +32,7 @@ export class CreateHuishoudboekjeComponent {
   }
   onAdd() {
     if (this.huishoudboekje.name != "") {
-      const ownerId = this.authService.currentUser?.uid
-      this.huishoudboekje.ownerId = 'test';
+      this.huishoudboekje.ownerId =  this.currentUserId;
       this.huishoudboekje.archived = false;
       this.huishoudboekjeService.addHuishoudboekje(this.huishoudboekje);
     }
