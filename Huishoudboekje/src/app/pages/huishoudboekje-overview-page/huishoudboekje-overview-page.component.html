@@ -1,0 +1,13 @@
+
+
+<h3>Huishoudboekjes</h3>
+<div class="album py-5 bg-light text-center">
+    <div class="container">
+        <p>Actief</p>
+        <app-list-huishoudboekje [huishoudboekjes]="nonArchivedHuishoudboekjes"></app-list-huishoudboekje>
+        <p>Archived</p>
+        <app-list-huishoudboekje [huishoudboekjes]="archivedHuishoudboekjes"></app-list-huishoudboekje>
+    </div>
+</div>
+
+<app-create-huishoudboekje></app-create-huishoudboekje>

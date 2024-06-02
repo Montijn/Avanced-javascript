@@ -1,0 +1,15 @@
+<ul>
+    <li *ngFor="let huishoudboekje of huishoudboekjes">
+        <div>
+            <div [ngClass]="{'disabled': huishoudboekje.archived}">
+                <a *ngIf="!huishoudboekje.archived" [routerLink]="['../huishoudboekje', huishoudboekje.id]">{{huishoudboekje.name}}</a>
+                <a *ngIf="huishoudboekje.archived">{{huishoudboekje.name}}</a>
+                <a>{{huishoudboekje.description}}</a>
+            </div>
+            
+            <button (click)="onDelete(huishoudboekje)">delete</button>
+            <button *ngIf="!huishoudboekje.archived" class="btn btn-primary" (click)="archiveProject(huishoudboekje.id)">Archive</button>
+            <button *ngIf="huishoudboekje.archived" class="btn btn-primary" (click)="deArchiveProject(huishoudboekje.id)">Dearchive</button>
+        </div>
+    </li>
+</ul>

@@ -1,0 +1,7 @@
+<form *ngIf="huishoudboekjeForm" [formGroup]="huishoudboekjeForm">
+    <table>
+    <tr><td>Name:<td><input formControlName="name"></td></tr>
+    <tr><td>Description:<td><input formControlName="description"></td></tr>
+    </table>
+    <button (click)="onSave()">Save</button>
+</form>
