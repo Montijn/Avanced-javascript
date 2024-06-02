@@ -1,22 +1,7 @@
 <mat-toolbar color="primary">
-    <span class="example-spacer"><a class="nav-link" routerLink="/overview"
-    routerLinkActive="activebutton"
-     ariaCurrentWhenActive="page">
-      Taskboard Manager
-    </a></span>
-    <span class="example-spacer">
-      <a class="nav-link" routerLink="/overview"
-      routerLinkActive="activebutton"
-       ariaCurrentWhenActive="page">Projects</a>
-    </span>
-    <span *ngIf="!authService.isLoggedIn()" class="example-spacer">
-      <a class="nav-link" routerLink="/auth"
-      routerLinkActive="activebutton"
-       ariaCurrentWhenActive="page">
-        Login
-      </a>
-    </span>
-    <span *ngIf="authService.isLoggedIn()" class="example-spacer">
-      <button class="nav-link" (click)="tryLogout()">Log out</button>
-    </span>
-</mat-toolbar>
+    <ul class="navbar-links">
+      <li><a [routerLink]="['/']">Home</a></li>
+      <li *ngIf="!currentUser"><a [routerLink]="['/auth']">Login/Register</a></li>
+      <li *ngIf="currentUser"><a (click)="tryLogout()">Logout</a></li>
+    </ul>
+  </mat-toolbar>

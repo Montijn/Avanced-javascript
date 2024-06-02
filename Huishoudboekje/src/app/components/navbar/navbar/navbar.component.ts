@@ -1,21 +1,22 @@
 import { Component } from '@angular/core';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 import { AuthService } from '../../../services/auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { User } from 'firebase/auth';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MatToolbarModule],
+  imports: [MatToolbarModule, NgIf, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
   currentUser: User
-  constructor(private authService: AuthService, private router: Router){
+  constructor(public authService: AuthService, private router: Router){
   }
-  
+
   ngOnInit() {
     this.authService.$currentUser.subscribe(user => {
       this.currentUser = user;
