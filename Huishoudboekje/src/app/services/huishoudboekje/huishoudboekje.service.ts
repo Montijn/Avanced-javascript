@@ -52,6 +52,9 @@ export class HuishoudboekjeService {
 
   async updateHuishoudboekje(huishoudboekje: Huishoudboekje) {
     const { id, ...object } = Object.assign({}, huishoudboekje);
+    if (!Array.isArray(huishoudboekje.participants)) {
+      huishoudboekje.participants = [huishoudboekje.participants];
+    }
     await updateDoc(doc(this.firebaseService.firestore, "Huishoudboekje", huishoudboekje.id), object);
   }
 

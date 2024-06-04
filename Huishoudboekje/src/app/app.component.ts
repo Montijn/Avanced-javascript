@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CreateHuishoudboekjeComponent } from './components/huishoudboekje/create-huishoudboekje/create-huishoudboekje.component';
 import { ListHuishoudboekjeComponent } from './components/huishoudboekje/list-huishoudboekje/list-huishoudboekje.component';
-import { DetailHuishoudboekjeComponent } from './components/huishoudboekje/detail-huishoudboekje/detail-huishoudboekje.component';
+import { EditHuishoudboekjeComponent } from './components/huishoudboekje/edit-huishoudboekje/edit-huishoudboekje.component';
 import { HuishoudboekjeOverviewPageComponent } from './pages/huishoudboekje-overview-page/huishoudboekje-overview-page.component';
 import { NavbarComponent } from "./components/navbar/navbar/navbar.component";
 import { LoginComponent } from './components/auth/login/login.component';
@@ -17,7 +17,7 @@ import { AuthenticationPageComponent } from './pages/authentication-page/authent
         RouterOutlet,
         CreateHuishoudboekjeComponent,
         ListHuishoudboekjeComponent,
-        DetailHuishoudboekjeComponent,
+        EditHuishoudboekjeComponent,
         HuishoudboekjeOverviewPageComponent,
         NavbarComponent,
         LoginComponent,

@@ -20,7 +20,7 @@ export class UserService {
       const usersSnapshot = onSnapshot(this.usersRef, (snapshot) => {
         const users = snapshot.docs.map(doc=> {
           const data = doc.data();
-          return { ...data, id: doc.id}
+          return { ...data, uid: doc.id}
         })
         subscriber.next(users);
       });
@@ -29,13 +29,13 @@ export class UserService {
 
   addUser(user: any) {
     const usersCol = collection(this.firebaseService.firestore, 'users');
-    setDoc(doc(usersCol, user.email), user)
+    setDoc(doc(usersCol, user.uid), user) // Assuming user.uid is the unique identifier
       .then(() => {
         console.log('User added successfully');
       })
       .catch((error) => {
         console.error('Error adding User: ', error);
-      })
+      });
   }
 
   getUser(id: any) {
