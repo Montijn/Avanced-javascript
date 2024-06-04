@@ -3,11 +3,16 @@ import { HuishoudboekjeService } from '../../../services/huishoudboekje/huishoud
 import { Huishoudboekje } from '../../../models/huishoudboekje.model';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule} from '@angular/material/card'
+import { MatButtonModule} from '@angular/material/button'
+import { User } from 'firebase/auth';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-list-huishoudboekje',
   standalone: true,
-  imports: [NgFor, RouterModule, NgIf, NgClass],
+  imports: [MatListModule,MatCardModule, MatButtonModule, NgFor, RouterModule, NgIf, NgClass],
   templateUrl: './list-huishoudboekje.component.html',
   styleUrl: './list-huishoudboekje.component.scss'
 })
@@ -15,8 +20,18 @@ export class ListHuishoudboekjeComponent {
 
   @Input()
   huishoudboekjes: Huishoudboekje[] = [];
+  
+  
+  currentUser: User
 
-  constructor(private huishoudboekjeService: HuishoudboekjeService){
+  
+  constructor(private huishoudboekjeService: HuishoudboekjeService, private authService: AuthService){
+  }
+
+  ngOnInit() {
+    this.authService.$currentUser.subscribe(user => {
+      this.currentUser = user;
+    });
   }
 
   onDelete(huishoudboekje: Huishoudboekje) {

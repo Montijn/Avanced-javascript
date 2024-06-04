@@ -5,4 +5,5 @@ export interface Huishoudboekje  {
     description: string;
     ownerId: string;
     archived: boolean;
-}
+    participants: string[];
+} 

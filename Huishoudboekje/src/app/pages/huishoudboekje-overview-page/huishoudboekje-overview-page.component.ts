@@ -4,6 +4,8 @@ import { HuishoudboekjeService } from '../../services/huishoudboekje/huishoudboe
 import { ListHuishoudboekjeComponent } from "../../components/huishoudboekje/list-huishoudboekje/list-huishoudboekje.component";
 import { CreateHuishoudboekjeComponent } from "../../components/huishoudboekje/create-huishoudboekje/create-huishoudboekje.component";
 import { NavbarComponent } from "../../components/navbar/navbar/navbar.component";
+import { User } from 'firebase/auth';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
     selector: 'app-huishoudboekje-overview-page',
@@ -15,12 +17,14 @@ import { NavbarComponent } from "../../components/navbar/navbar/navbar.component
 export class HuishoudboekjeOverviewPageComponent {
   archivedHuishoudboekjes: Huishoudboekje[] = [];
   nonArchivedHuishoudboekjes: Huishoudboekje[] = [];
-  constructor(private huishoudboekjeService: HuishoudboekjeService){
+  
+  constructor(private huishoudboekjeService: HuishoudboekjeService, private authService: AuthService){
     huishoudboekjeService.getHuishoudboekjes().subscribe(huishoudboekjes => {
       this.archivedHuishoudboekjes = huishoudboekjes.filter((huishoudboekje: {archived: any;}) => huishoudboekje.archived)
       this.nonArchivedHuishoudboekjes = huishoudboekjes.filter((huishoudboekje: {archived: any;}) => !huishoudboekje.archived)
+      
     })
-
-
   }
+
+
 }

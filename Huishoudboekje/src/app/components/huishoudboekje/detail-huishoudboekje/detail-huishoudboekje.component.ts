@@ -1,40 +1,88 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HuishoudboekjeService } from '../../../services/huishoudboekje/huishoudboekje.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Huishoudboekje } from '../../../models/huishoudboekje.model';
+import { User } from 'firebase/auth';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-detail-huishoudboekje',
   standalone: true,
-  imports: [NgIf,ReactiveFormsModule],
+  imports: [NgIf, ReactiveFormsModule, NgFor],
   templateUrl: './detail-huishoudboekje.component.html',
-  styleUrl: './detail-huishoudboekje.component.scss'
+  styleUrls: ['./detail-huishoudboekje.component.scss']
 })
-export class DetailHuishoudboekjeComponent {
-  selected_id: string = "";
+export class DetailHuishoudboekjeComponent implements OnDestroy {
+  @Input() huishoudboekjeId: string;
 
-  subscription: Subscription | undefined;
-
+  selected_id: string = '';
+  participants: User[] = [];
+  availableUsers: User[] = [];
+  subscriptions: Subscription[] = [];
   huishoudboekjeForm: FormGroup;
+  huishoudboekje: Huishoudboekje
 
-  constructor(private huishoudboekjeService: HuishoudboekjeService, private route: ActivatedRoute, private formBuilder: UntypedFormBuilder) {
-    this.selected_id = this.route.snapshot.paramMap.get('id') ?? "";
+  constructor(
+    private huishoudboekjeService: HuishoudboekjeService,
+    private route: ActivatedRoute,
+    private formBuilder: UntypedFormBuilder,
+    private userService: UserService,
+  ) {
+    this.selected_id = this.route.snapshot.paramMap.get('id') ?? '';
 
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-
-    this.subscription = this.huishoudboekjeService.getHuishoudboekje(this.selected_id).subscribe((huishoudboekje: any) => {
+    const huishoudboekjeSubscription = this.huishoudboekjeService.getHuishoudboekje(this.selected_id).subscribe((huishoudboekje: any) => {
       if (huishoudboekje) {
         this.huishoudboekjeForm = this.formBuilder.group(huishoudboekje);
+        this.huishoudboekje = huishoudboekje
+        this.mapParticipantsToUsers(huishoudboekje.participants ?? []);
       }
+    });
+
+    const userSubscription = this.userService.$users.subscribe((users: User[]) => {
+      this.availableUsers = users;
+      if (this.huishoudboekjeForm) {
+        this.mapParticipantsToUsers(this.huishoudboekjeForm.value.participants ?? []);
+      }
+    });
+
+    this.subscriptions.push(huishoudboekjeSubscription, userSubscription);
+  }
+
+  private mapParticipantsToUsers(participantIds: string[]): void {
+    this.participants = this.availableUsers.filter(user => participantIds.includes(user.uid));
+    this.availableUsers = this.availableUsers.filter(user => !participantIds.includes(user.uid));
+  }
+
+  addParticipant(userId: string): void {
+    console.log(userId)
+    console.log(this.huishoudboekje.participants)
+      if (!this.huishoudboekje.participants.includes(userId)) {
+        this.huishoudboekje.participants.push(userId);
+        console.log(this.huishoudboekje.participants)
+        this.mapParticipantsToUsers(this.huishoudboekje.participants);
+      }
+  }
+
+  removeParticipant(userId: string): void {
+    // this.huishoudboekjeService.removeParticipant(this.huishoudboekjeId, userId).then(() => {
+    //   const index = this.huishoudboekjeForm.value.participants.indexOf(userId);
+    //   if (index !== -1) {
+    //     this.huishoudboekjeForm.value.participants.splice(index, 1);
+    //     this.mapParticipantsToUsers(this.huishoudboekjeForm.value.participants);
+    //   }
+    // });
+  }
+
+  onSave(): void {
+    this.huishoudboekjeService.updateHuishoudboekje(this.huishoudboekjeForm.value).then(() => {
+      console.log('Huishoudboekje updated');
     });
   }
 
-  onSave() {
-    this.huishoudboekjeService.updateHuishoudboekje(this.huishoudboekjeForm.value)
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

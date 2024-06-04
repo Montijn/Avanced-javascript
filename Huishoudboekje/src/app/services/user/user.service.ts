@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService } from '../firebase/firebase.service';
 import { CollectionReference, collection, setDoc, doc, onSnapshot } from 'firebase/firestore';
-import { User } from '../../models/user.model';
 import { Auth, User as FirebaseUser } from 'firebase/auth';
 import { Observable, of } from 'rxjs';
 

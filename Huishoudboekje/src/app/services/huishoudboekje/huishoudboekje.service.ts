@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscriber, of } from 'rxjs';
 import {Huishoudboekje} from '../../models/huishoudboekje.model'
-import { CollectionReference, Firestore, addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from '@firebase/firestore';
+import { Firestore, addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from '@firebase/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 @Injectable({
   providedIn: 'root'
@@ -46,12 +46,14 @@ export class HuishoudboekjeService {
     await addDoc(collection(this.firebaseService.firestore, 'Huishoudboekje'), object);
   }
 
-  deleteHuishoudboekje(huishoudboekje: Huishoudboekje) {
-    deleteDoc(doc(this.firebaseService.firestore, "Huishoudboekje", huishoudboekje.id));
+ async deleteHuishoudboekje(huishoudboekje: Huishoudboekje) {
+    await deleteDoc(doc(this.firebaseService.firestore, "Huishoudboekje", huishoudboekje.id));
   }
 
-  updateHuishoudboekje(huishoudboekje: Huishoudboekje) {
+  async updateHuishoudboekje(huishoudboekje: Huishoudboekje) {
     const { id, ...object } = Object.assign({}, huishoudboekje);
-    updateDoc(doc(this.firebaseService.firestore, "Huishoudboekje", huishoudboekje.id), object);
+    await updateDoc(doc(this.firebaseService.firestore, "Huishoudboekje", huishoudboekje.id), object);
   }
+
+  
 }

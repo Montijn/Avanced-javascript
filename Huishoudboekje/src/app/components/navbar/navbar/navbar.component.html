@@ -1,7 +1,18 @@
-<mat-toolbar color="primary">
-    <ul class="navbar-links">
-      <li><a [routerLink]="['/']">Home</a></li>
-      <li *ngIf="!currentUser"><a [routerLink]="['/auth']">Login/Register</a></li>
-      <li *ngIf="currentUser"><a (click)="tryLogout()">Logout</a></li>
-    </ul>
-  </mat-toolbar>
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" [routerLink]="['/']">Home</a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item" *ngIf="!currentUser">
+          <a class="nav-link" [routerLink]="['/auth']">Login/Register</a>
+        </li>
+      </ul>
+      <div class="d-flex">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item" *ngIf="currentUser">
+            <a class="nav-link" (click)="tryLogout()">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  

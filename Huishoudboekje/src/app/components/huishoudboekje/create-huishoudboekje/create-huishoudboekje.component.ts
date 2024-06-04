@@ -3,12 +3,13 @@ import { Huishoudboekje } from '../../../models/huishoudboekje.model';
 import { FormsModule } from '@angular/forms';
 import { HuishoudboekjeService } from '../../../services/huishoudboekje/huishoudboekje.service';
 import { AuthService } from '../../../services/auth/auth.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-create-huishoudboekje',
   standalone: true,
   imports: [
-    FormsModule,
+    FormsModule,NgIf
   ],
   templateUrl: './create-huishoudboekje.component.html',
   styleUrl: './create-huishoudboekje.component.scss'
@@ -28,12 +29,14 @@ export class CreateHuishoudboekjeComponent {
     description: '',
     ownerId: '',
     archived: false,
-    id:''
+    id:'',
+    participants: []
   }
   onAdd() {
     if (this.huishoudboekje.name != "") {
       this.huishoudboekje.ownerId =  this.currentUserId;
       this.huishoudboekje.archived = false;
+      this.huishoudboekje.participants =[this.currentUserId];
       this.huishoudboekjeService.addHuishoudboekje(this.huishoudboekje);
     }
     this.huishoudboekje = {
@@ -41,7 +44,8 @@ export class CreateHuishoudboekjeComponent {
       description: '',
       ownerId: '',
       archived: false,
-      id:''
+      id:'',
+      participants: []
     };
   }
 }

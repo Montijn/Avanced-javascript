@@ -1,3 +1,11 @@
-<input [(ngModel)]="huishoudboekje.name" placeholder="name">
-<input [(ngModel)]="huishoudboekje.description" placeholder="description">
-<button (click)="onAdd()">+</button>
+<div *ngIf="currentUserId" class="mt-4">
+    <div class="mb-3">
+        <label for="name" class="form-label">Name:</label>
+        <input type="text" [(ngModel)]="huishoudboekje.name" id="name" class="form-control" placeholder="Enter name">
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description:</label>
+        <input type="text" [(ngModel)]="huishoudboekje.description" id="description" class="form-control" placeholder="Enter description">
+    </div>
+    <button type="button" class="btn btn-primary" (click)="onAdd()">Add</button>
+</div>

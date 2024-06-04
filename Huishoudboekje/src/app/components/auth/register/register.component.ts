@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } 
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
 import { UserService } from '../../../services/user/user.service';
+import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-register',
@@ -28,13 +29,13 @@ export class RegisterComponent {
 
   createForm() {
     this.registerForm = this.fb.group({
-      name: ['', Validators.required],
+      displayName: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
-  tryRegister(value: any){
+  tryRegister(value: User){
     this.authService.doRegister(value)
     .then(res => {
       console.log(res);
