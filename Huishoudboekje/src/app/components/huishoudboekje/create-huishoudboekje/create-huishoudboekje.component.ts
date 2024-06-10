@@ -36,7 +36,7 @@ export class CreateHuishoudboekjeComponent {
     if (this.huishoudboekje.name != "") {
       this.huishoudboekje.ownerId =  this.currentUserId;
       this.huishoudboekje.archived = false;
-      this.huishoudboekje.participants =[this.currentUserId,""];
+      this.huishoudboekje.participants = [];
       this.huishoudboekjeService.addHuishoudboekje(this.huishoudboekje);
     }
     this.huishoudboekje = {

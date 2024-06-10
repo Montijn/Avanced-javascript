@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { EditHuishoudboekjeComponent } from "../huishoudboekje/edit-huishoudboekje/edit-huishoudboekje.component";
-import { NavbarComponent } from "../navbar/navbar/navbar.component";
+import { EditHuishoudboekjeComponent } from "../../components/huishoudboekje/edit-huishoudboekje/edit-huishoudboekje.component";
+import { NavbarComponent } from "../../components/navbar/navbar/navbar.component";
 
 @Component({
     selector: 'app-huishoudboekje-edit-page',

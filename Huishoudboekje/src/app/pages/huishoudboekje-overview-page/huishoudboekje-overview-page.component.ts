@@ -17,14 +17,25 @@ import { AuthService } from '../../services/auth/auth.service';
 export class HuishoudboekjeOverviewPageComponent {
   archivedHuishoudboekjes: Huishoudboekje[] = [];
   nonArchivedHuishoudboekjes: Huishoudboekje[] = [];
-  
-  constructor(private huishoudboekjeService: HuishoudboekjeService, private authService: AuthService){
-    huishoudboekjeService.getHuishoudboekjes().subscribe(huishoudboekjes => {
-      this.archivedHuishoudboekjes = huishoudboekjes.filter((huishoudboekje: {archived: any;}) => huishoudboekje.archived)
-      this.nonArchivedHuishoudboekjes = huishoudboekjes.filter((huishoudboekje: {archived: any;}) => !huishoudboekje.archived)
-      
-    })
+  ownHuishuidboekjes: Huishoudboekje[] = [];
+  currentUser: User
+
+  ngOnInit() {
+    this.authService.$currentUser.subscribe(user => {
+      this.currentUser = user;
+    });
   }
-
-
+  constructor(private huishoudboekjeService: HuishoudboekjeService, private authService: AuthService){
+      
+      huishoudboekjeService.getHuishoudboekjes().subscribe(huishoudboekjes => {
+        if(this.currentUser){
+          this.ownHuishuidboekjes = huishoudboekjes.filter(hb => hb.ownerId === this.currentUser.uid || hb.participants.includes(this.currentUser.uid))
+          this.archivedHuishoudboekjes = this.ownHuishuidboekjes.filter((huishoudboekje: {archived: boolean;}) => huishoudboekje.archived)
+          this.nonArchivedHuishoudboekjes = this.ownHuishuidboekjes.filter((huishoudboekje: {archived: boolean;}) => !huishoudboekje.archived)
+          console.log(this.ownHuishuidboekjes)
+          console.log(this.currentUser.uid)
+        }
+      })
+    }
+    
 }

@@ -29,7 +29,7 @@ export class UserService {
 
   addUser(user: any) {
     const usersCol = collection(this.firebaseService.firestore, 'users');
-    setDoc(doc(usersCol, user.uid), user) // Assuming user.uid is the unique identifier
+    setDoc(doc(usersCol, user.uid), user) 
       .then(() => {
         console.log('User added successfully');
       })

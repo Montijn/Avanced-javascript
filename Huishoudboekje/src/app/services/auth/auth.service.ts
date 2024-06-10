@@ -26,8 +26,6 @@ export class AuthService {
       onAuthStateChanged(this.auth, (user) => {
         if (user) {
           subscriber.next(user);
-        } else {
-          console.log('logged out');
         }
       });
     });
