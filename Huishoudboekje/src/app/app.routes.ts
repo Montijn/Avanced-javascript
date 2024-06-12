@@ -3,11 +3,13 @@ import { HuishoudboekjeOverviewPageComponent } from './pages/huishoudboekje-over
 import { AuthenticationPageComponent } from './pages/authentication-page/authentication-page.component';
 import { HuishoudboekjeEditPageComponent } from './pages/huishoudboekje-edit-page/huishoudboekje-edit-page.component';
 import { TransactionOverviewPageComponent } from './pages/transaction-overview-page/transaction-overview-page.component';
+import { TransactionEditPageComponent } from './pages/transaction-edit-page/transaction-edit-page.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'overview', pathMatch: 'full' },
     { path: 'overview', component: HuishoudboekjeOverviewPageComponent },
     { path: 'huishoudboekje/edit/:id', component: HuishoudboekjeEditPageComponent },
+    { path: 'huishoudboekje/:id/transaction/edit/:trasactionId', component: TransactionEditPageComponent },
     { path: 'huishoudboekje/:id', component: TransactionOverviewPageComponent },
     { path: 'auth', component: AuthenticationPageComponent}
 ];

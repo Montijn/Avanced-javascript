@@ -30,7 +30,7 @@ export class TransactionService {
     });
   }
 
-  getTransaction(id: string): Observable<Transaction | undefined> {
+  getTransaction(id: string): Observable<Transaction> {
     return new Observable((subscriber: Subscriber<any>) => {
       if (id == "") {
         subscriber.next(null);
@@ -46,16 +46,16 @@ export class TransactionService {
     });
   }
 
-  addTransaction(transaction: Transaction) {
+ async addTransaction(transaction: Transaction) {
     const { id, ...object } = Object.assign({}, transaction);
     addDoc(collection(this.firebaseService.firestore, 'Transactions'), object);
   }
 
-  deleteTransaction(transaction: Transaction) {
+ async deleteTransaction(transaction: Transaction) {
     deleteDoc(doc(this.firebaseService.firestore, "Transactions", transaction.id));
   }
 
-  updateTransaction(transaction: Transaction) {
+  async updateTransaction(transaction: Transaction) {
     const { id, ...object } = Object.assign({}, transaction);
     updateDoc(doc(this.firebaseService.firestore, "Transactions", transaction.id), object);
   }

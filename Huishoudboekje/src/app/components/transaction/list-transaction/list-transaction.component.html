@@ -13,7 +13,7 @@
                 <p></p>
             </div>
             <div class="d-flex gap-2">
-                <button  class="btn btn-primary btn-sm" [routerLink]="['../transaction/edit', transaction.id]">Edit</button>              
+                <button class="btn btn-primary btn-sm"[routerLink]="['transaction/edit', transaction.id]">Edit</button>
                 <button class="btn btn-danger btn-sm" (click)="onDelete(transaction)">Delete</button>
             </div>
           </div>
@@ -21,4 +21,3 @@
       </li>
     </ul>
   </div>
-  

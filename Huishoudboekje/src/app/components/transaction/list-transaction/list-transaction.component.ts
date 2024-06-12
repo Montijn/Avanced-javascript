@@ -18,7 +18,7 @@ export class ListTransactionComponent {
  @Input()
  transactions: Transaction[] = [];
  
- private huishoudboekjeId: string;
+ public huishoudboekjeId: string;
   constructor(
     private route: ActivatedRoute,
     private transactionService: TransactionService,

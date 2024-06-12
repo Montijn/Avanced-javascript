@@ -1,1 +1,33 @@
-<p>edit-transaction works!</p>
+<div *ngIf="transaction" class="mt-4">
+    <form #huishoudboekjeForm="ngForm" (ngSubmit)="onSave()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="name" class="form-label">Amount:</label>
+            <input type="text" [(ngModel)]="transaction.amount" name="name" id="name" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <input type="text" [(ngModel)]="transaction.description" name="description" id="description" class="form-control">
+          </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+              <label for="type" class="form-label">type:</label>
+              <input type="text" [(ngModel)]="transaction.type" name="type" id="type" class="form-control">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+              <label for="date" class="form-label">date:</label>
+              <input type="text" [(ngModel)]="transaction.date" name="date" id="date" class="form-control">
+            </div>
+        </div>
+      </div>
+      <button class="btn btn-primary mt-4" (click)="onSave()">Save</button>
+    </form>
+
+</div>
+  
