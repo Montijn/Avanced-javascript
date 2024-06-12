@@ -32,8 +32,6 @@ export class HuishoudboekjeOverviewPageComponent {
           this.ownHuishuidboekjes = huishoudboekjes.filter(hb => hb.ownerId === this.currentUser.uid || hb.participants.includes(this.currentUser.uid))
           this.archivedHuishoudboekjes = this.ownHuishuidboekjes.filter((huishoudboekje: {archived: boolean;}) => huishoudboekje.archived)
           this.nonArchivedHuishoudboekjes = this.ownHuishuidboekjes.filter((huishoudboekje: {archived: boolean;}) => !huishoudboekje.archived)
-          console.log(this.ownHuishuidboekjes)
-          console.log(this.currentUser.uid)
         }
       })
     }

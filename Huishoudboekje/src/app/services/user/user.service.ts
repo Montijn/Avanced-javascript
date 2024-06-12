@@ -20,8 +20,10 @@ export class UserService {
       const usersSnapshot = onSnapshot(this.usersRef, (snapshot) => {
         const users = snapshot.docs.map(doc=> {
           const data = doc.data();
+          
           return { ...data, uid: doc.id}
         })
+        console.log(users)
         subscriber.next(users);
       });
     });

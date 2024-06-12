@@ -25,7 +25,7 @@ export class HuishoudboekjeService {
     });
   }
 
-  getHuishoudboekje(id: string): Observable<Huishoudboekje | undefined> {
+  getHuishoudboekje(id: string): Observable<Huishoudboekje> {
     return new Observable((subscriber: Subscriber<any>) => {
       if (id == "") {
         subscriber.next(null);

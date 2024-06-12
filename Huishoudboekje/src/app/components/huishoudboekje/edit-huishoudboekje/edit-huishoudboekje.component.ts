@@ -53,8 +53,7 @@ export class EditHuishoudboekjeComponent implements OnDestroy {
   private mapParticipantsToUsers(participantIds: string[]): void {
     this.participants = this.allUsers.filter(user => participantIds.includes(user.uid));
     console.log(this.huishoudboekje.participants)
-    this.availableUsers = this.allUsers.filter(user => !participantIds.includes(user.uid));
-  }
+    this.availableUsers = this.allUsers.filter(user => !participantIds.includes(user.uid) && !this.huishoudboekje.ownerId );  }
 
   addParticipant(userId: string): void {
       if (!this.huishoudboekje.participants.includes(userId)) {

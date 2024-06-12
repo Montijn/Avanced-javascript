@@ -22,7 +22,7 @@ export class AuthService {
 
   constructor(private firebaseService: FirebaseService) {
     this.auth = this.firebaseService.auth;
-    this.$currentUser = new Observable<any>((subscriber) => {
+    this.$currentUser = new Observable<User>((subscriber) => {
       onAuthStateChanged(this.auth, (user) => {
         if (user) {
           subscriber.next(user);

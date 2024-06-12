@@ -1,0 +1,30 @@
+<div *ngIf="huishoudboekje" class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        <h2>{{ huishoudboekje.name }}</h2>
+      </div>
+      <div class="card-body">
+        <p class="card-text">{{ huishoudboekje.description }}</p>
+  
+        <div class="row mt-4">
+          <div class="col-12">
+            <h5>Participants</h5>
+            <ul class="list-group">
+              <li *ngFor="let participant of participants" class="list-group-item">
+                {{ participant.displayName }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="!huishoudboekje" class="container mt-4">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-text">Loading...</p>
+      </div>
+    </div>
+  </div>
+  

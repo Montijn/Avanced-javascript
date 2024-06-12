@@ -6,17 +6,17 @@
             <div class="d-flex flex-column">
               <div [ngClass]="{'text-muted': huishoudboekje.archived}">
                 <h6 class="card-title m-0">
-                  <a *ngIf="!huishoudboekje.archived">{{huishoudboekje.name}}</a>
-                  <span *ngIf="huishoudboekje.archived">{{huishoudboekje.name}}</span>
+                  <a *ngIf="!huishoudboekje.archived"[routerLink]="['../huishoudboekje/', huishoudboekje.id]">{{huishoudboekje.name}}</a>
+                  <span *ngIf="huishoudboekje.archived" [routerLink]="['../huishoudboekje/', huishoudboekje.id]">{{huishoudboekje.name}}</span>
                 </h6>
                 <p class="card-text m-0">{{huishoudboekje.description}}</p>
               </div>
             </div>
             <div class="d-flex gap-2">
-                <button *ngIf="currentUser?.uid === huishoudboekje.ownerId" class="btn btn-primary btn-sm" [routerLink]="['../huishoudboekje', huishoudboekje.id]">Edit</button>              
+                <button *ngIf="currentUser?.uid === huishoudboekje.ownerId" class="btn btn-primary btn-sm" [routerLink]="['../huishoudboekje/edit/', huishoudboekje.id]">Edit</button>              
                 <button *ngIf="!huishoudboekje.archived" class="btn btn-primary btn-sm" (click)="archiveProject(huishoudboekje.id)">Archive</button>
                 <button *ngIf="huishoudboekje.archived" class="btn btn-success btn-sm" (click)="deArchiveProject(huishoudboekje.id)">Dearchive</button>
-                <button class="btn btn-danger btn-sm" (click)="onDelete(huishoudboekje)">Delete</button>
+                <button *ngIf="currentUser?.uid === huishoudboekje.ownerId" class="btn btn-danger btn-sm" (click)="onDelete(huishoudboekje)">Delete</button>
             </div>
           </div>
         </div>

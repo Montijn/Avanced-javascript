@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
 import { Transaction } from '../../models/transaction.model';
-import { Firestore, addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from '@firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from '@firebase/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 
 @Injectable({
@@ -11,17 +11,20 @@ export class TransactionService {
 
   constructor(private firebaseService: FirebaseService) {}
 
-  getTransactions(householdBookId: string): Observable<Transaction[]> {
+  getTransactions(huishoudboekjeId: string): Observable<Transaction[]> {
     return new Observable((subscriber: Subscriber<Transaction[]>) => {
       onSnapshot(collection(this.firebaseService.firestore, 'Transactions'), (snapshot) => {
         let transactions: Transaction[] = [];
         snapshot.forEach((doc) => {
           let transaction = doc.data() as Transaction;
           transaction.id = doc.id;
-          if (transaction.householdBookId === householdBookId) {
+          console.log(transaction.huishoudboekjeId)
+          console.log(huishoudboekjeId)
+          if (transaction.huishoudboekjeId === huishoudboekjeId) {
             transactions.push(transaction);
           }
         });
+        console.log(transactions)
         subscriber.next(transactions);
       });
     });

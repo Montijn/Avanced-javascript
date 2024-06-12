@@ -1,0 +1,23 @@
+<div class="mt-4">
+    <div class="mb-3">
+      <label for="amount" class="form-label">Amount:</label>
+      <input type="number" [(ngModel)]="transaction.amount" id="amount" class="form-control" placeholder="Enter amount">
+    </div>
+    <div class="mb-3">
+      <label for="type" class="form-label">Type:</label>
+      <select [(ngModel)]="transaction.type" id="type" class="form-select">
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="date" class="form-label">Date:</label>
+      <input type="date" [(ngModel)]="transaction.date" id="date" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description:</label>
+      <input type="text" [(ngModel)]="transaction.description" id="description" class="form-control" placeholder="Enter description">
+    </div>
+    <button type="button" class="btn btn-primary" (click)="onAdd()">Add Transaction</button>
+  </div>
+  
