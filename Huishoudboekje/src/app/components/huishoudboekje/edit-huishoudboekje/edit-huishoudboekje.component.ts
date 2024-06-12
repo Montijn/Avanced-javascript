@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HuishoudboekjeService } from '../../../services/huishoudboekje/huishoudboekje.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,15 +15,13 @@ import { UserService } from '../../../services/user/user.service';
   templateUrl: './edit-huishoudboekje.component.html',
   styleUrls: ['./edit-huishoudboekje.component.scss']
 })
-export class EditHuishoudboekjeComponent implements OnDestroy {
-
+export class EditHuishoudboekjeComponent {
 
   selected_id: string = '';
   allUsers: User[] = [];
   participants: User[] = [];
   availableUsers: User[] = [];
-  subscriptions: Subscription[] = [];
-  huishoudboekje: Huishoudboekje
+  huishoudboekje: Huishoudboekje;
 
   constructor(
     private huishoudboekjeService: HuishoudboekjeService,
@@ -33,34 +31,31 @@ export class EditHuishoudboekjeComponent implements OnDestroy {
   ) {
     this.selected_id = this.route.snapshot.paramMap.get('id') ?? '';
 
-    const huishoudboekjeSubscription = this.huishoudboekjeService.getHuishoudboekje(this.selected_id).subscribe((huishoudboekje: any) => {
+    // Fetch the huishoudboekje first
+    this.huishoudboekjeService.getHuishoudboekje(this.selected_id).subscribe((huishoudboekje: Huishoudboekje) => {
       if (huishoudboekje) {
-        this.huishoudboekje = huishoudboekje
-        this.mapParticipantsToUsers(huishoudboekje.participants ?? []);
-      }
-    });
-
-    const userSubscription = this.userService.$users.subscribe((users: User[]) => {
-      this.allUsers = users;
-      if (this.huishoudboekje) {
+        this.huishoudboekje = huishoudboekje;
         this.mapParticipantsToUsers(this.huishoudboekje.participants ?? []);
+
       }
     });
 
-    this.subscriptions.push(huishoudboekjeSubscription, userSubscription);
+    this.userService.$users.subscribe((users: User[]) => {
+      this.allUsers = users;
+      this.mapParticipantsToUsers(this.huishoudboekje.participants ?? []);
+    });
   }
 
   private mapParticipantsToUsers(participantIds: string[]): void {
     this.participants = this.allUsers.filter(user => participantIds.includes(user.uid));
-    console.log(this.huishoudboekje.participants)
-    this.availableUsers = this.allUsers.filter(user => !participantIds.includes(user.uid) && !this.huishoudboekje.ownerId );  }
+    this.availableUsers = this.allUsers.filter(user => !participantIds.includes(user.uid) && user.uid !== this.huishoudboekje.ownerId);
+  }
 
   addParticipant(userId: string): void {
-      if (!this.huishoudboekje.participants.includes(userId)) {
-        this.huishoudboekje.participants.push(userId);
-        console.log(this.huishoudboekje.participants)
-        this.mapParticipantsToUsers(this.huishoudboekje.participants);
-      }
+    if (!this.huishoudboekje.participants.includes(userId)) {
+      this.huishoudboekje.participants.push(userId);
+      this.mapParticipantsToUsers(this.huishoudboekje.participants);
+    }
   }
 
   removeParticipant(userId: string): void {
@@ -68,21 +63,12 @@ export class EditHuishoudboekjeComponent implements OnDestroy {
     if (index !== -1) {
       this.huishoudboekje.participants.splice(index, 1);
       this.mapParticipantsToUsers(this.huishoudboekje.participants);
-      console.log('Participant removed:', userId);
-    } else {
-      console.error('Attempted to remove a participant not in the list:', userId);
     }
   }
-  
 
   onSave(): void {
     this.huishoudboekjeService.updateHuishoudboekje(this.huishoudboekje).then(() => {
-      console.log('Huishoudboekje updated');
+      this.router.navigate(['/overview']);
     });
-    this.router.navigate(['/overview']);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
