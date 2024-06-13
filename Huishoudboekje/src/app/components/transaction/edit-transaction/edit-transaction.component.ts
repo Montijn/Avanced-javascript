@@ -1,42 +1,45 @@
-import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../services/auth/auth.service';
-import { TransactionService } from '../../../services/transaction/transaction.service';
 import { Transaction } from '../../../models/transaction.model';
-
+import { TransactionService } from '../../../services/transaction/transaction.service';
+import { NgIf } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Timestamp } from 'firebase/firestore';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-edit-transaction',
   standalone: true,
-  imports: [NgIf, FormsModule],
+  imports: [NgIf, FormsModule, MatDatepickerModule, MatNativeDateModule  ],
   templateUrl: './edit-transaction.component.html',
-  styleUrl: './edit-transaction.component.scss'
+  styleUrls: ['./edit-transaction.component.scss']
 })
 export class EditTransactionComponent {
- transactionId: string = '';
- currentUserId: string = "";
- transaction: Transaction;
- constructor(private route: ActivatedRoute, private authService: AuthService, private transactionService: TransactionService, private router: Router,){
-  this.transactionId = this.route.snapshot.paramMap.get('trasactionId') ?? '';
+  transactionId: string = '';
+  currentUserId: string = '';
+  transaction: Transaction;
+  transactionDate: Date;
 
-  this.authService.$currentUser.subscribe(user => {
-    if (user) {
-      this.currentUserId = user.uid;
-    }
-  });
-  this.transactionService.getTransaction(this.transactionId).subscribe((transaction: Transaction) => {
-    if (transaction) {
-      this.transaction = transaction;
-    }
-  });
- }
+  constructor(private route: ActivatedRoute, private transactionService: TransactionService, private router: Router) {
+    this.transactionId = this.route.snapshot.paramMap.get('transactionId') ?? '';
 
- onSave(): void {
-  this.transactionService.updateTransaction(this.transaction).then(() => {
-    this.router.navigate(['/overview']);
-  });
-}
+    this.transactionService.getTransaction(this.transactionId).subscribe((transaction: Transaction) => {
+      if (transaction) {
+        this.transaction = transaction;
+        if (this.transaction.date instanceof Timestamp) {
+          this.transactionDate = this.transaction.date.toDate();
+        } else {
+          this.transactionDate = new Date(this.transaction.date);
+        }
+      }
+    });
+  }
 
+  onSave(): void {
+    this.transaction.date = Timestamp.fromDate(this.transactionDate);
+    this.transactionService.updateTransaction(this.transaction).then(() => {
+      this.router.navigate(['/overview']);
+    });
+  }
 }

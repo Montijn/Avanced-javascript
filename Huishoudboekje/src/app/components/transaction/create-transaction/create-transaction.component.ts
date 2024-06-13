@@ -4,6 +4,7 @@ import { Transaction } from '../../../models/transaction.model';
 import { TransactionService } from '../../../services/transaction/transaction.service';
 import { NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-create-transaction',
@@ -23,7 +24,7 @@ export class CreateTransactionComponent {
     huishoudboekjeId: '',
     amount: 0,
     type: 'expense',
-    date: new Date(),
+    date: Timestamp.now(),
     description: ''
   };
 
@@ -35,6 +36,7 @@ export class CreateTransactionComponent {
   onAdd() {
     if (this.transaction.amount > 0 && this.transaction.description != "") {
       this.transaction.huishoudboekjeId = this.huishoudboekjeId;
+      this.transaction.date = Timestamp.now();
       this.transactionService.addTransaction(this.transaction);
     }
     this.transaction = {
@@ -42,7 +44,7 @@ export class CreateTransactionComponent {
       huishoudboekjeId: '',
       amount: 0,
       type: 'expense',
-      date: new Date(),
+      date: Timestamp.now(),
       description: ''
     };
   }

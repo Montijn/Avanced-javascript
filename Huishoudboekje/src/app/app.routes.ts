@@ -9,7 +9,7 @@ export const routes: Routes = [
     { path: '', redirectTo: 'overview', pathMatch: 'full' },
     { path: 'overview', component: HuishoudboekjeOverviewPageComponent },
     { path: 'huishoudboekje/edit/:id', component: HuishoudboekjeEditPageComponent },
-    { path: 'huishoudboekje/:id/transaction/edit/:trasactionId', component: TransactionEditPageComponent },
+    { path: 'huishoudboekje/:id/transaction/edit/:transactionId', component: TransactionEditPageComponent },
     { path: 'huishoudboekje/:id', component: TransactionOverviewPageComponent },
     { path: 'auth', component: AuthenticationPageComponent}
 ];

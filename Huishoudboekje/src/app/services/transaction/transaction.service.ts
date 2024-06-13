@@ -18,13 +18,10 @@ export class TransactionService {
         snapshot.forEach((doc) => {
           let transaction = doc.data() as Transaction;
           transaction.id = doc.id;
-          console.log(transaction.huishoudboekjeId)
-          console.log(huishoudboekjeId)
           if (transaction.huishoudboekjeId === huishoudboekjeId) {
             transactions.push(transaction);
           }
         });
-        console.log(transactions)
         subscriber.next(transactions);
       });
     });
@@ -32,13 +29,13 @@ export class TransactionService {
 
   getTransaction(id: string): Observable<Transaction> {
     return new Observable((subscriber: Subscriber<any>) => {
-      if (id == "") {
+      if (id === "") {
         subscriber.next(null);
       } else {
         onSnapshot(doc(this.firebaseService.firestore, "Transactions", id), (doc) => {
           let transaction = doc.data() ?? null;
           if (transaction) {
-            transaction['id'] = doc.id;
+            transaction["id"] = doc.id;
           }
           subscriber.next(transaction);
         });
@@ -46,17 +43,17 @@ export class TransactionService {
     });
   }
 
- async addTransaction(transaction: Transaction) {
+  async addTransaction(transaction: Transaction) {
     const { id, ...object } = Object.assign({}, transaction);
-    addDoc(collection(this.firebaseService.firestore, 'Transactions'), object);
+    await addDoc(collection(this.firebaseService.firestore, 'Transactions'), object);
   }
 
- async deleteTransaction(transaction: Transaction) {
-    deleteDoc(doc(this.firebaseService.firestore, "Transactions", transaction.id));
+  async deleteTransaction(transaction: Transaction) {
+    await deleteDoc(doc(this.firebaseService.firestore, "Transactions", transaction.id));
   }
 
   async updateTransaction(transaction: Transaction) {
     const { id, ...object } = Object.assign({}, transaction);
-    updateDoc(doc(this.firebaseService.firestore, "Transactions", transaction.id), object);
+    await updateDoc(doc(this.firebaseService.firestore, "Transactions", transaction.id), object);
   }
 }
