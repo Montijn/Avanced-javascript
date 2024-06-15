@@ -18,7 +18,7 @@ export class CategoryService {
         snapshot.forEach((doc) => {
           let category = doc.data() as Category;
           category.id = doc.id;
-          if (category.householdBookId === householdBookId) {
+          if (category.huishoudboekjeId === householdBookId) {
             categories.push(category);
           }
         });
@@ -27,7 +27,7 @@ export class CategoryService {
     });
   }
 
-  getCategory(id: string): Observable<Category | undefined> {
+  getCategory(id: string): Observable<Category> {
     return new Observable((subscriber: Subscriber<any>) => {
       if (id == "") {
         subscriber.next(null);
@@ -43,16 +43,16 @@ export class CategoryService {
     })
   }
 
-  addCategory(category: Category) {
+  async addCategory(category: Category) {
     const { id, ...object } = Object.assign({}, category);
     addDoc(collection(this.firebaseService.firestore, 'Categories'), object);
   }
 
-  deleteCategory(category: Category) {
+  async deleteCategory(category: Category) {
     deleteDoc(doc(this.firebaseService.firestore, "Categories", category.id));
   }
 
-  updateCategory(category: Category) {
+  async updateCategory(category: Category) {
     const { id, ...object } = Object.assign({}, category);
     updateDoc(doc(this.firebaseService.firestore, "Categories", category.id), object);
   }

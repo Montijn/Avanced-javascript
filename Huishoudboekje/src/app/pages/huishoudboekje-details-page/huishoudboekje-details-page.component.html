@@ -1,0 +1,20 @@
+<app-navbar></app-navbar>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <app-details-huishoudboekje></app-details-huishoudboekje>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <button class="btn btn-primary btn-block" [routerLink]="['/huishoudboekje', huishoudboekjeId, 'transactions']">
+        View Transactions
+      </button>
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-secondary btn-block" [routerLink]="['/huishoudboekje', huishoudboekjeId, 'categories']">
+        View Categories
+      </button>
+    </div>
+  </div>
+</div>

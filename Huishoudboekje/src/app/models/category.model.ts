@@ -1,10 +1,9 @@
+import { Timestamp } from "firebase/firestore";
 
 export interface Category {
     id: string;
-    householdBookId: string;
+    huishoudboekjeId: string;
     name: string;
     maxBudget: number;
-    endDate?: Date;
-    createdAt: Date;
-    updatedAt: Date;
+    endDate?: Timestamp | null;
 }

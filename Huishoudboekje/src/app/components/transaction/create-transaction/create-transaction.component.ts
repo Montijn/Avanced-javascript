@@ -1,23 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Transaction } from '../../../models/transaction.model';
 import { TransactionService } from '../../../services/transaction/transaction.service';
-import { NgIf } from '@angular/common';
+import { CategoryService } from '../../../services/category/category.service';
+import { NgFor, NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Timestamp } from 'firebase/firestore';
+import { Category } from '../../../models/category.model';
 
 @Component({
   selector: 'app-create-transaction',
   standalone: true,
-  imports: [
-    FormsModule, NgIf
-  ],
+  imports: [FormsModule, NgIf, NgFor],
   templateUrl: './create-transaction.component.html',
   styleUrls: ['./create-transaction.component.scss']
 })
-export class CreateTransactionComponent {
-
+export class CreateTransactionComponent implements OnInit {
   private huishoudboekjeId: string;
+  categories: Category[] = [];
 
   transaction: Transaction = {
     id: '',
@@ -25,27 +25,42 @@ export class CreateTransactionComponent {
     amount: 0,
     type: 'expense',
     date: Timestamp.now(),
-    description: ''
+    description: '',
+    categoryId: ''
   };
 
-  constructor(private transactionService: TransactionService,  private route: ActivatedRoute) {
+  constructor(
+    private transactionService: TransactionService, 
+    private categoryService: CategoryService, 
+    private route: ActivatedRoute
+  ) {
     this.huishoudboekjeId = this.route.snapshot.paramMap.get("id") ?? "";
-    console.log(this.huishoudboekjeId);
+  }
+
+  ngOnInit() {
+    this.categoryService.getCategories(this.huishoudboekjeId).subscribe((categories: Category[]) => {
+      this.categories = categories;
+    });
   }
 
   onAdd() {
-    if (this.transaction.amount > 0 && this.transaction.description != "") {
+    if (this.transaction.amount > 0) {
       this.transaction.huishoudboekjeId = this.huishoudboekjeId;
       this.transaction.date = Timestamp.now();
       this.transactionService.addTransaction(this.transaction);
+      this.resetForm();
     }
+  }
+
+  private resetForm() {
     this.transaction = {
       id: '',
       huishoudboekjeId: '',
       amount: 0,
       type: 'expense',
       date: Timestamp.now(),
-      description: ''
+      description: '',
+      categoryId: ''
     };
   }
 }

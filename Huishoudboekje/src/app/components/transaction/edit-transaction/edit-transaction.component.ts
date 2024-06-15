@@ -17,7 +17,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 })
 export class EditTransactionComponent {
   transactionId: string = '';
-  currentUserId: string = '';
   transaction: Transaction;
   transactionDate: Date;
 
