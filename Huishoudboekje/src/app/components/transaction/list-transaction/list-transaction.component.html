@@ -10,10 +10,16 @@
     </div>
   </div>
 
-  <app-monthly-chart [transactions]="filteredTransactions" [selectedMonth]="selectedMonth"></app-monthly-chart>
-  <app-category-chart [transactions]="filteredTransactions" [categories]="categories"></app-category-chart>
+  <div class="row">
+    <div class="col-md-6">
+      <app-monthly-chart [transactions]="filteredTransactions" [selectedMonth]="selectedMonth"></app-monthly-chart>
+    </div>
+    <div class="col-md-6">
+      <app-category-chart [transactions]="filteredTransactions" [categories]="categories"></app-category-chart>
+    </div>
+  </div>
 
-  <ul class="list-unstyled">
+  <ul class="list-unstyled mt-4">
     <li *ngFor="let transaction of filteredTransactions" class="mb-2">
       <div class="card compact-card">
         <div class="card-body d-flex justify-content-between align-items-center p-2">
