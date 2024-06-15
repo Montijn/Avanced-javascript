@@ -25,7 +25,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
 
   const huishoudboekje = await firstValueFrom(huishoudboekjeService.getHuishoudboekje(huishoudboekjeId));
 
-  if (huishoudboekje.ownerId === user.uid || huishoudboekje.participants.includes(user.uid)) {
+  if ((huishoudboekje.ownerId === user.uid || huishoudboekje.participants.includes(user.uid)) && huishoudboekje.archived == false) {
     return true;
   } else {
     await router.navigate(['/overview']);
