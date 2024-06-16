@@ -23,7 +23,6 @@ export class UserService {
           
           return { ...data, uid: doc.id}
         })
-        console.log(users)
         subscriber.next(users);
       });
     });

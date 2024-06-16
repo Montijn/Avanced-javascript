@@ -26,7 +26,6 @@ export class CreateCategoryComponent {
   }
   constructor(private categoryService: CategoryService,  private route: ActivatedRoute) {
     this.huishoudboekjeId = this.route.snapshot.paramMap.get("id") ?? "";
-    console.log(this.huishoudboekjeId);
   }
 
   onAdd() {

@@ -18,6 +18,9 @@ export class CreateHuishoudboekjeComponent {
 
   currentUserId: string
   constructor(private huishoudboekjeService: HuishoudboekjeService, private authService: AuthService){
+   
+  }
+  ngOnInit(){
     this.authService.$currentUser.subscribe(user => {
       if (user) {
         this.currentUserId = user.uid;

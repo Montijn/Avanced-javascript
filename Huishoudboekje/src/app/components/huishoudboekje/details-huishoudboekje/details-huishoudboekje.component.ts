@@ -29,22 +29,24 @@ export class DetailsHuishoudboekjeComponent {
     if(this.huishoudboekjeId == null){
       this.router.navigate(['/overview']);
     }
-    this.huishoudboekjeService.getHuishoudboekje(this.huishoudboekjeId).subscribe((huishoudboekje: Huishoudboekje) => {
-      if (huishoudboekje) {
-        this.huishoudboekje = huishoudboekje
-        this.mapParticipantsToUsers(huishoudboekje.participants ?? []);
-      }
-    });
 
-    this.userService.$users.subscribe((users: User[]) => {
-      this.allUsers = users;
-      if (this.huishoudboekje) {
-        this.mapParticipantsToUsers(this.huishoudboekje.participants ?? []);
-      }
-    });
   }
+ ngOnInit(){
+  this.huishoudboekjeService.getHuishoudboekje(this.huishoudboekjeId).subscribe((huishoudboekje: Huishoudboekje) => {
+    if (huishoudboekje) {
+      this.huishoudboekje = huishoudboekje
+      this.mapParticipantsToUsers(huishoudboekje.participants ?? []);
+    }
+  });
 
-  private mapParticipantsToUsers(participantIds: string[]): void {
+  this.userService.$users.subscribe((users: User[]) => {
+    this.allUsers = users;
+    if (this.huishoudboekje) {
+      this.mapParticipantsToUsers(this.huishoudboekje.participants ?? []);
+    }
+  });
+ }
+  public mapParticipantsToUsers(participantIds: string[]): void {
     this.participants = this.allUsers.filter(user => participantIds.includes(user.uid));
   }
 

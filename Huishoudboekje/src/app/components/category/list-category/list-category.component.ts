@@ -24,21 +24,24 @@ export class ListCategoryComponent {
     private route: ActivatedRoute
   ) {
     this.huishoudboekjeId = this.route.snapshot.paramMap.get("id") ?? "";
+
+  }
+
+  ngOnInit(){
     this.transactionService.getTransactions(this.huishoudboekjeId).subscribe(transactions => {
       this.transactions = transactions;
     });
   }
 
+  private calculateCategoryTransactions(categoryId: string, type: 'expense' | 'income'): number {
+    return this.transactions
+      .filter(transaction => transaction.categoryId === categoryId && transaction.type === type)
+      .reduce((total, transaction) => total + transaction.amount, 0);
+  }
+
   getCategoryAvailableBudget(categoryId: string): number {
-    const categoryTransactions = this.transactions.filter(
-      transaction => transaction.categoryId === categoryId
-    );
-    const totalExpenses = categoryTransactions.reduce((total, transaction) => {
-      return transaction.type === 'expense' ? total + transaction.amount : total;
-    }, 0);
-    const totalIncomes = categoryTransactions.reduce((total, transaction) => {
-      return transaction.type === 'income' ? total + transaction.amount : total;
-    }, 0);
+    const totalExpenses = this.calculateCategoryTransactions(categoryId, 'expense');
+    const totalIncomes = this.calculateCategoryTransactions(categoryId, 'income');
     const category = this.categories.find(cat => cat.id === categoryId);
     return category ? category.maxBudget + totalIncomes - totalExpenses : 0;
   }
@@ -46,19 +49,13 @@ export class ListCategoryComponent {
   getSpentPercentage(categoryId: string): number {
     const category = this.categories.find(cat => cat.id === categoryId);
     if (!category) return 0;
-  
-    const totalExpenses = this.transactions
-      .filter(transaction => transaction.categoryId === categoryId && transaction.type === 'expense')
-      .reduce((total, transaction) => total + transaction.amount, 0);
-  
-    const totalIncomes = this.transactions
-      .filter(transaction => transaction.categoryId === categoryId && transaction.type === 'income')
-      .reduce((total, transaction) => total + transaction.amount, 0);
-  
+
+    const totalExpenses = this.calculateCategoryTransactions(categoryId, 'expense');
+    const totalIncomes = this.calculateCategoryTransactions(categoryId, 'income');
+
     const availableBudget = category.maxBudget + totalIncomes - totalExpenses;
     return availableBudget > 0 ? (availableBudget / category.maxBudget) * 100 : 0;
   }
-  
 
   getBudgetStatusClass(percentage: number): string {
     if (percentage > 100) {

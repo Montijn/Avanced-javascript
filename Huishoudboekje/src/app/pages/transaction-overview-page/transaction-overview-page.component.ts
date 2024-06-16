@@ -21,7 +21,6 @@ export class TransactionOverviewPageComponent {
     transactionService.getTransactions(this.huishoudboekjeId).subscribe((transactions: Transaction[]) => {
       if(transactions){
         this.transactions = transactions
-        console.log(this.transactions)
       }
     })
   }

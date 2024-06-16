@@ -22,7 +22,6 @@ export class CategoryOverviewPageComponent {
     categoryService.getCategories(this.huishoudboekjeId).subscribe((categories: Category[]) => {
       if(categories){
         this.categories = categories
-        console.log(this.categories)
       }
     })
   }

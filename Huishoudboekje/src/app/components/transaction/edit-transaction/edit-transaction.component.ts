@@ -38,7 +38,7 @@ export class EditTransactionComponent {
   onSave(): void {
     this.transaction.date = Timestamp.fromDate(this.transactionDate);
     this.transactionService.updateTransaction(this.transaction).then(() => {
-      this.router.navigate(['/overview']);
+      this.router.navigate(['/huishoudboekje', this.transaction.huishoudboekjeId, 'transactions']);
     });
   }
 }

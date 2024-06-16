@@ -23,6 +23,10 @@ export class EditCategoryComponent {
   constructor(private route: ActivatedRoute, private categoryService: CategoryService, private router: Router) {
     this.categoryId = this.route.snapshot.paramMap.get('categoryId') ?? '';
 
+   
+  }
+
+  ngOnInit(){
     this.categoryService.getCategory(this.categoryId).subscribe((category: Category) => {
       if (category) {
         this.category = category;
@@ -39,7 +43,7 @@ export class EditCategoryComponent {
   onSave(): void {
     this.category.endDate = Timestamp.fromDate(this.endDate);
     this.categoryService.updateCategory(this.category).then(() => {
-      this.router.navigate(['/overview']);
+      this.router.navigate(['/huishoudboekje', this.category.huishoudboekjeId, 'categories']);
     });
   }
 }

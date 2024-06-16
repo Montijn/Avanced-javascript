@@ -32,11 +32,15 @@ export class EditHuishoudboekjeComponent {
     private authService: AuthService
   ) {
     this.huishoudboekjeId = this.route.snapshot.paramMap.get('id') ?? '';
+  }
+
+  ngOnInit(){
     this.authService.$currentUser.subscribe(user => {
       if (user) {
         this.currentUserId = user.uid;
       }
     });
+
     this.huishoudboekjeService.getHuishoudboekje(this.huishoudboekjeId).subscribe((huishoudboekje: Huishoudboekje) => {
       if (huishoudboekje) {
         this.huishoudboekje = huishoudboekje;

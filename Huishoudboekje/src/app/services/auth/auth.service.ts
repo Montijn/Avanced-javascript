@@ -29,7 +29,6 @@ export class AuthService {
         }
       });
     });
-    console.log(this.$currentUser);
   }
 
   doRegister(value: any) {
@@ -62,7 +61,6 @@ export class AuthService {
 
   doLogout() {
     return new Promise((resolve, reject) => {
-        console.log(this.auth.currentUser)
         signOut(this.auth)
           .then((res) => {
             resolve(res);

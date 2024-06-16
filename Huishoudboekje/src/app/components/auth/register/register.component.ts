@@ -38,11 +38,9 @@ export class RegisterComponent {
   tryRegister(value: User){
     this.authService.doRegister(value)
     .then(res => {
-      console.log(res);
       this.errorMessage = "";
       this.successMessage = "Account successfully created";
     }, err => {
-      console.log(err);
       this.errorMessage = err.message;
       this.successMessage = "";
     })

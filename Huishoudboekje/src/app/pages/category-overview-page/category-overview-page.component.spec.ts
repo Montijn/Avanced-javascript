@@ -1,14 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CategoryOverviewPageComponent } from './category-overview-page.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('CategoryOverviewPageComponent', () => {
   let component: CategoryOverviewPageComponent;
   let fixture: ComponentFixture<CategoryOverviewPageComponent>;
+  let mockActivatedRoute: any;
 
   beforeEach(async () => {
+    mockActivatedRoute = {
+      snapshot: {
+        paramMap: {
+          get: () => '1'
+        }
+      }
+    };
     await TestBed.configureTestingModule({
-      imports: [CategoryOverviewPageComponent]
+      imports: [CategoryOverviewPageComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+      ]
     })
     .compileComponents();
     
